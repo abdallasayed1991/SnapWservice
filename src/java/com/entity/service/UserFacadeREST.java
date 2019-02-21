@@ -18,6 +18,8 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.MediaType;
 
 /**
  *
@@ -85,5 +87,34 @@ public class UserFacadeREST extends AbstractFacade<User> {
     protected EntityManager getEntityManager() {
         return em;
     }
+    
+    // login function
+    @GET
+    @Path("login/{userName}/{userPassword}")
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public User Login(@PathParam("userName") String u, @PathParam("userPassword") String p)
+    {
+        User user = super.login(u, p);
+        System.out.println(user.getUserEmail());
+        return user;
+    }
+    
+    @GET
+    @Path("login")
+    @Produces({MediaType.APPLICATION_JSON})
+    public User logintest(@QueryParam("User_name") String User_name,@QueryParam("User_Password") String User_Password)
+    {
+        User user = null;
+        for(User u: findAll())
+        {
+            if (u.getUserName().equals(User_name)&&u.getUserPassword().equals(User_Password)) {
+                user = u;
+                break;
+            }
+        }
+        return user;
+    }
+    
+    
     
 }

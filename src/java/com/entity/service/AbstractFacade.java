@@ -7,6 +7,7 @@ package com.entity.service;
 
 import java.util.List;
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 
 /**
  *
@@ -58,6 +59,16 @@ public abstract class AbstractFacade<T> {
         cq.select(getEntityManager().getCriteriaBuilder().count(rt));
         javax.persistence.Query q = getEntityManager().createQuery(cq);
         return ((Long) q.getSingleResult()).intValue();
+    }
+    
+    public T login(String userName, String Password)
+    {
+        Query query;
+        query = getEntityManager().createNamedQuery("User.Login");
+        query.setParameter("userName", userName);
+        query.setParameter("userPassword", Password);
+        //System.out.println("com.entity.service.AbstractFacade.login()"+query.getResultList());
+        return (T) query.getSingleResult();//getResultList
     }
     
 }
