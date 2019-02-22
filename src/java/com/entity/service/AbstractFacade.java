@@ -61,11 +61,11 @@ public abstract class AbstractFacade<T> {
         return ((Long) q.getSingleResult()).intValue();
     }
     
-    public T login(String userName, String Password)
+    public T login(String email, String Password)
     {
         Query query;
         query = getEntityManager().createNamedQuery("User.Login");
-        query.setParameter("userName", userName);
+        query.setParameter("userEmail", email);
         query.setParameter("userPassword", Password);
         //System.out.println("com.entity.service.AbstractFacade.login()"+query.getResultList());
         return (T) query.getSingleResult();//getResultList
