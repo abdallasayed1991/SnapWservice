@@ -102,12 +102,12 @@ public class UserFacadeREST extends AbstractFacade<User> {
     @GET
     @Path("login")
     @Produces({MediaType.APPLICATION_JSON})
-    public User logintest(@QueryParam("userEmail") String User_name,@QueryParam("User_Password") String User_Password)
+    public User logintest(@QueryParam("userEmail") String User_email,@QueryParam("User_Password") String User_Password)
     {
         User user = null;
         for(User u: findAll())
         {
-            if (u.getUserName().equals(User_name)&&u.getUserPassword().equals(User_Password)) {
+            if (u.getUserEmail().equals(User_email)&&u.getUserPassword().equals(User_Password)) {
                 user = u;
                 break;
             }
