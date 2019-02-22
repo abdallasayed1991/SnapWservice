@@ -6,9 +6,7 @@
 package com.entity;
 
 import java.io.Serializable;
-import java.util.Collection;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -17,16 +15,14 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author section
+ * @author Smile With Me Blease
  */
 @Entity
 @Table(name = "Product")
@@ -39,7 +35,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Product.findByProductDetailes", query = "SELECT p FROM Product p WHERE p.productDetailes = :productDetailes"),
     @NamedQuery(name = "Product.findByProductModel", query = "SELECT p FROM Product p WHERE p.productModel = :productModel"),
     @NamedQuery(name = "Product.findByProductColor", query = "SELECT p FROM Product p WHERE p.productColor = :productColor"),
-    @NamedQuery(name = "Product.findByProductState", query = "SELECT p FROM Product p WHERE p.productState = :productState")})
+    @NamedQuery(name = "Product.findByProductState", query = "SELECT p FROM Product p WHERE p.productState = :productState"),
+    @NamedQuery(name = "Product.findByProductgroup", query = "SELECT p FROM Product p WHERE p.productgroup = :productgroup")})
 public class Product implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -79,10 +76,9 @@ public class Product implements Serializable {
     @NotNull
     @Column(name = "Product_State")
     private int productState;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "productid")
-    private Collection<Comment> commentCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "product")
-    private Collection<UserInteract> userInteractCollection;
+    @Size(max = 50)
+    @Column(name = "Product_group")
+    private String productgroup;
     @JoinColumn(name = "Brand_id", referencedColumnName = "Brand_ID")
     @ManyToOne(optional = false)
     private Brand brandid;
@@ -92,8 +88,6 @@ public class Product implements Serializable {
     @JoinColumn(name = "Offer_id", referencedColumnName = "Offer_ID")
     @ManyToOne(optional = false)
     private Offer offerid;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "product")
-    private Collection<ProductSnapping> productSnappingCollection;
 
     public Product() {
     }
@@ -177,22 +171,12 @@ public class Product implements Serializable {
         this.productState = productState;
     }
 
-    @XmlTransient
-    public Collection<Comment> getCommentCollection() {
-        return commentCollection;
+    public String getProductgroup() {
+        return productgroup;
     }
 
-    public void setCommentCollection(Collection<Comment> commentCollection) {
-        this.commentCollection = commentCollection;
-    }
-
-    @XmlTransient
-    public Collection<UserInteract> getUserInteractCollection() {
-        return userInteractCollection;
-    }
-
-    public void setUserInteractCollection(Collection<UserInteract> userInteractCollection) {
-        this.userInteractCollection = userInteractCollection;
+    public void setProductgroup(String productgroup) {
+        this.productgroup = productgroup;
     }
 
     public Brand getBrandid() {
@@ -217,15 +201,6 @@ public class Product implements Serializable {
 
     public void setOfferid(Offer offerid) {
         this.offerid = offerid;
-    }
-
-    @XmlTransient
-    public Collection<ProductSnapping> getProductSnappingCollection() {
-        return productSnappingCollection;
-    }
-
-    public void setProductSnappingCollection(Collection<ProductSnapping> productSnappingCollection) {
-        this.productSnappingCollection = productSnappingCollection;
     }
 
     @Override

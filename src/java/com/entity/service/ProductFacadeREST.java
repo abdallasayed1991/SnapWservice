@@ -21,7 +21,7 @@ import javax.ws.rs.Produces;
 
 /**
  *
- * @author section
+ * @author Smile With Me Blease
  */
 @Stateless
 @Path("com.entity.product")

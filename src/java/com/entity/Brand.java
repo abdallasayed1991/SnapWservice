@@ -38,6 +38,11 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Brand.findByBrandName", query = "SELECT b FROM Brand b WHERE b.brandName = :brandName"),
     @NamedQuery(name = "Brand.findByMerchantid", query = "SELECT b FROM Brand b WHERE b.merchantid = :merchantid")})
 public class Brand implements Serializable {
+    @Basic(optional = false)
+    @NotNull
+    @Lob
+    @Column(name = "Brand_Logo")
+    private byte[] brandLogo;
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -49,11 +54,6 @@ public class Brand implements Serializable {
     @Size(min = 1, max = 50)
     @Column(name = "Brand_Name")
     private String brandName;
-    @Basic(optional = false)
-    @NotNull
-    @Lob
-    @Column(name = "Brand_Logo")
-    private byte[] brandLogo;
     @Basic(optional = false)
     @NotNull
     @Column(name = "Merchant_id")
@@ -168,5 +168,7 @@ public class Brand implements Serializable {
     public String toString() {
         return "com.entity.Brand[ brandID=" + brandID + " ]";
     }
+
+    
     
 }
