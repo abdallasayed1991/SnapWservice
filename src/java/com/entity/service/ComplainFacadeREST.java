@@ -6,6 +6,7 @@
 package com.entity.service;
 
 import com.entity.Complain;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -18,6 +19,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 
 /**
  *
@@ -85,5 +87,21 @@ public class ComplainFacadeREST extends AbstractFacade<Complain> {
     protected EntityManager getEntityManager() {
         return em;
     }
+ 
+    @GET
+    @Path("getAllData")
+    @Produces({MediaType.APPLICATION_JSON})
+    public List<Complain> getAllData()
+    {
+        List<Complain> allData = new ArrayList();
+        Complain object =null;
+        for(Complain C: findAll())
+        {
+            object = C;
+            allData.add(C);
+        }
+        return allData;
+    }
+    
     
 }
