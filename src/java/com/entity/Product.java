@@ -6,7 +6,9 @@
 package com.entity;
 
 import java.io.Serializable;
+import java.util.Collection;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -15,14 +17,16 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Smile With Me Blease
+ * @author section
  */
 @Entity
 @Table(name = "Product")
@@ -35,9 +39,21 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Product.findByProductDetailes", query = "SELECT p FROM Product p WHERE p.productDetailes = :productDetailes"),
     @NamedQuery(name = "Product.findByProductModel", query = "SELECT p FROM Product p WHERE p.productModel = :productModel"),
     @NamedQuery(name = "Product.findByProductColor", query = "SELECT p FROM Product p WHERE p.productColor = :productColor"),
-    @NamedQuery(name = "Product.findByProductState", query = "SELECT p FROM Product p WHERE p.productState = :productState"),
-    @NamedQuery(name = "Product.findByProductgroup", query = "SELECT p FROM Product p WHERE p.productgroup = :productgroup")})
+    @NamedQuery(name = "Product.findByProductState", query = "SELECT p FROM Product p WHERE p.productState = :productState")})
 public class Product implements Serializable {
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    @Column(name = "Product_Price")
+    private Double productPrice;
+    @Size(max = 500)
+    @Column(name = "Product_Group")
+    private String productGroup;
+    @Column(name = "Product_Code")
+    private Integer productCode;
+    @Lob
+    @Column(name = "Product_Image")
+    private byte[] productImage;
+    @Column(name = "Product_State")
+    private Integer productState;
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -49,10 +65,6 @@ public class Product implements Serializable {
     @Size(min = 1, max = 50)
     @Column(name = "Product_Name")
     private String productName;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "Product_Price")
-    private double productPrice;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 500)
@@ -67,18 +79,10 @@ public class Product implements Serializable {
     @Size(min = 1, max = 50)
     @Column(name = "Product_Color")
     private String productColor;
-    @Basic(optional = false)
-    @NotNull
-    @Lob
-    @Column(name = "Product_Image")
-    private byte[] productImage;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "Product_State")
-    private int productState;
-    @Size(max = 50)
-    @Column(name = "Product_group")
-    private String productgroup;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "productid")
+    private Collection<Comment> commentCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "product")
+    private Collection<UserInteract> userInteractCollection;
     @JoinColumn(name = "Brand_id", referencedColumnName = "Brand_ID")
     @ManyToOne(optional = false)
     private Brand brandid;
@@ -88,6 +92,8 @@ public class Product implements Serializable {
     @JoinColumn(name = "Offer_id", referencedColumnName = "Offer_ID")
     @ManyToOne(optional = false)
     private Offer offerid;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "product")
+    private Collection<ProductSnapping> productSnappingCollection;
 
     public Product() {
     }
@@ -171,12 +177,22 @@ public class Product implements Serializable {
         this.productState = productState;
     }
 
-    public String getProductgroup() {
-        return productgroup;
+    @XmlTransient
+    public Collection<Comment> getCommentCollection() {
+        return commentCollection;
     }
 
-    public void setProductgroup(String productgroup) {
-        this.productgroup = productgroup;
+    public void setCommentCollection(Collection<Comment> commentCollection) {
+        this.commentCollection = commentCollection;
+    }
+
+    @XmlTransient
+    public Collection<UserInteract> getUserInteractCollection() {
+        return userInteractCollection;
+    }
+
+    public void setUserInteractCollection(Collection<UserInteract> userInteractCollection) {
+        this.userInteractCollection = userInteractCollection;
     }
 
     public Brand getBrandid() {
@@ -203,6 +219,15 @@ public class Product implements Serializable {
         this.offerid = offerid;
     }
 
+    @XmlTransient
+    public Collection<ProductSnapping> getProductSnappingCollection() {
+        return productSnappingCollection;
+    }
+
+    public void setProductSnappingCollection(Collection<ProductSnapping> productSnappingCollection) {
+        this.productSnappingCollection = productSnappingCollection;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -226,6 +251,34 @@ public class Product implements Serializable {
     @Override
     public String toString() {
         return "com.entity.Product[ productID=" + productID + " ]";
+    }
+
+
+
+    public void setProductPrice(Double productPrice) {
+        this.productPrice = productPrice;
+    }
+
+    public String getProductGroup() {
+        return productGroup;
+    }
+
+    public void setProductGroup(String productGroup) {
+        this.productGroup = productGroup;
+    }
+
+    public Integer getProductCode() {
+        return productCode;
+    }
+
+    public void setProductCode(Integer productCode) {
+        this.productCode = productCode;
+    }
+
+
+
+    public void setProductState(Integer productState) {
+        this.productState = productState;
     }
     
 }
