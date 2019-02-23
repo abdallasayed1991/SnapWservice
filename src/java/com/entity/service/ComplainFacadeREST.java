@@ -90,7 +90,7 @@ public class ComplainFacadeREST extends AbstractFacade<Complain> {
  
     @GET
     @Path("getAllData")
-    @Produces({MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})
     public List<Complain> getAllData()
     {
         List<Complain> allData = new ArrayList();
