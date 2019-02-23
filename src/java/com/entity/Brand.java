@@ -167,7 +167,7 @@ public class Brand implements Serializable {
         return "com.entity.Brand[ brandID=" + brandID + " ]";
     }
 
-  
+   
 
 
     

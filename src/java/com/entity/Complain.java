@@ -38,6 +38,12 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Complain.findByRespondDate", query = "SELECT c FROM Complain c WHERE c.respondDate = :respondDate"),
     @NamedQuery(name = "Complain.findByRespondText", query = "SELECT c FROM Complain c WHERE c.respondText = :respondText")})
 public class Complain implements Serializable {
+    @Size(max = 255)
+    @Column(name = "Complain_Data")
+    private String complainData;
+    @Size(max = 255)
+    @Column(name = "Respond_Data")
+    private String respondData;
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -159,6 +165,22 @@ public class Complain implements Serializable {
     @Override
     public String toString() {
         return "com.entity.Complain[ complainID=" + complainID + " ]";
+    }
+
+    public String getComplainData() {
+        return complainData;
+    }
+
+    public void setComplainData(String complainData) {
+        this.complainData = complainData;
+    }
+
+    public String getRespondData() {
+        return respondData;
+    }
+
+    public void setRespondData(String respondData) {
+        this.respondData = respondData;
     }
     
 }

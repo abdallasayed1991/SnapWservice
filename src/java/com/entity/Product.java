@@ -41,6 +41,9 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Product.findByProductColor", query = "SELECT p FROM Product p WHERE p.productColor = :productColor"),
     @NamedQuery(name = "Product.findByProductState", query = "SELECT p FROM Product p WHERE p.productState = :productState")})
 public class Product implements Serializable {
+    @Lob
+    @Column(name = "Product_Image")
+    private byte[] productImage;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "Product_Price")
     private Double productPrice;
@@ -49,9 +52,6 @@ public class Product implements Serializable {
     private String productGroup;
     @Column(name = "Product_Code")
     private Integer productCode;
-    @Lob
-    @Column(name = "Product_Image")
-    private byte[] productImage;
     @Column(name = "Product_State")
     private Integer productState;
     private static final long serialVersionUID = 1L;
@@ -280,5 +280,6 @@ public class Product implements Serializable {
     public void setProductState(Integer productState) {
         this.productState = productState;
     }
-    
+
+
 }
